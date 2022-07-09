@@ -3,6 +3,7 @@ package com.java.gui;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JFrame;
 import java.awt.Color;
@@ -70,6 +71,7 @@ public class LibrarianHome implements ActionListener{
 		btnBooks.setForeground(Color.WHITE);
 		btnBooks.setBackground(new Color(75, 0, 130));
 		btnBooks.setBounds(12, 148, 188, 37);
+		btnBooks.addActionListener(this);
 		panel.add(btnBooks);
 		
 		btnIssue = new JButton("ISSUE BOOK");
@@ -103,7 +105,12 @@ public class LibrarianHome implements ActionListener{
 		
 		Object obj = v.getSource();
 		if(obj.equals(btnBooks)) {
-			
+			try {
+				new ManageBooks().frmManageBooks.setVisible(true);;
+			} catch (ClassNotFoundException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 }

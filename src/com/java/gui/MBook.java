@@ -32,9 +32,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.awt.Window.Type;
 
-public class ManageBooks implements ActionListener{
+public class MBook implements ActionListener{
 
-	public JFrame frmManageBooks;
+	private JFrame frmManageBooks;
 	private JTextField isbn;
 	private JTextField bookname;
 	private JTextField writer;
@@ -68,8 +68,19 @@ public class ManageBooks implements ActionListener{
 	 * 
 	 * 
 	 */
-	
-	public ManageBooks() throws ClassNotFoundException, SQLException {
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					MBook window = new MBook();
+					window.frmManageBooks.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	public MBook() throws ClassNotFoundException, SQLException {
 		initialize();
 		LoadTable();
 	}
@@ -80,6 +91,7 @@ public class ManageBooks implements ActionListener{
 	private void initialize() {
 		frmManageBooks = new JFrame();
 		frmManageBooks.setResizable(false);
+		frmManageBooks.setType(Type.POPUP);
 		frmManageBooks.getContentPane().setBackground(Color.MAGENTA);
 		frmManageBooks.setTitle("MANAGE BOOKS");
 		frmManageBooks.setBounds(100, 100, 776, 472);
@@ -299,6 +311,7 @@ public class ManageBooks implements ActionListener{
 		
 		// TODO Auto-generated method stub
 		if(ev.getSource().equals(btnAdd)) {
+			Validate();
 			total.setText(Float.parseFloat(price.getText())*Integer.parseInt(quantity.getText())+"");
 			try {
 				pst = conn.connect.prepareStatement("insert into books values(?,?,?,?,?,?,?,?,?)");
@@ -408,4 +421,16 @@ public class ManageBooks implements ActionListener{
 		table.setModel(DbUtils.resultSetToTableModel(pst.executeQuery()));
 	}
 	
+	private void Validate() {
+		if(isbn.getText().isBlank()||writer.getText().isBlank()||publisher.getText().isBlank()||
+				edition.getText().isBlank()||price.getText().isBlank()||quantity.getText().isBlank()) {
+			
+			if(Integer.valueOf(quantity.getText())<=0) {
+				JOptionPane.showMessageDialog(frmManageBooks, "Quantity value must be greater than 0","warning",JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+			JOptionPane.showMessageDialog(frmManageBooks, "Fill in all blanks","warning",JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+	}
 }

@@ -13,7 +13,7 @@ import javax.swing.JButton;
 public class LibrarianHome implements ActionListener{
 
 	private JFrame frmLibrarianHome;
-	private JButton btnManage,btnStudent,btnBooks,btnIssue,btnReturn,btnStats,btnLogout;
+	private JButton btnManage,btnStudent,btnBooks,btnIssue,btnReturn,btnStats;
 
 	/**
 	 * Launch the application.
@@ -43,15 +43,16 @@ public class LibrarianHome implements ActionListener{
 	 */
 	private void initialize() {
 		frmLibrarianHome = new JFrame();
+		frmLibrarianHome.setResizable(false);
 		frmLibrarianHome.getContentPane().setBackground(Color.ORANGE);
 		frmLibrarianHome.setTitle("LIBRARIAN HOME");
-		frmLibrarianHome.setBounds(100, 100, 775, 484);
+		frmLibrarianHome.setBounds(100, 100, 775, 430);
 		frmLibrarianHome.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmLibrarianHome.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.CYAN);
-		panel.setBounds(12, 12, 212, 438);
+		panel.setBounds(12, 12, 212, 384);
 		frmLibrarianHome.getContentPane().add(panel);
 		panel.setLayout(null);
 		
@@ -78,6 +79,7 @@ public class LibrarianHome implements ActionListener{
 		btnIssue.setForeground(Color.WHITE);
 		btnIssue.setBackground(new Color(75, 0, 130));
 		btnIssue.setBounds(12, 211, 188, 37);
+		btnIssue.addActionListener(this);
 		panel.add(btnIssue);
 		
 		btnReturn = new JButton("RETURN BOOK");
@@ -91,12 +93,6 @@ public class LibrarianHome implements ActionListener{
 		btnStats.setBackground(new Color(75, 0, 130));
 		btnStats.setBounds(12, 334, 188, 37);
 		panel.add(btnStats);
-		
-		btnLogout = new JButton("LOGOUT");
-		btnLogout.setForeground(Color.WHITE);
-		btnLogout.setBackground(new Color(75, 0, 130));
-		btnLogout.setBounds(12, 389, 188, 37);
-		panel.add(btnLogout);
 	}
 
 	@Override
@@ -111,6 +107,10 @@ public class LibrarianHome implements ActionListener{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+		
+		if(obj.equals(btnIssue)) {
+			new IssueBook().frmIssueBook.setVisible(true);;
 		}
 	}
 }

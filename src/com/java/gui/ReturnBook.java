@@ -1,33 +1,30 @@
 package com.java.gui;
 
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalTime;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 import com.java.connection.Connection;
 import com.java.models.issue;
 
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
+public class ReturnBook  implements ActionListener{
 
-import java.awt.Color;
-import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-import java.awt.Font;
-
-public class IssueBook implements ActionListener{
-
-	public JFrame frmIssueBook;
+	public JFrame frame;
 	private JTextField getisbn;
 	private JTextField getname;
 	private JTextField getwriter;
@@ -36,15 +33,31 @@ public class IssueBook implements ActionListener{
 	private JTextField getstudent;
 	private JTextField getyear;
 	private JTextField getmobile;
-	private JButton btnIssue;
+	private JButton btnReturn,btnSearch ;
 	Connection conn; PreparedStatement pst; issue iss ;
  private JTextField showdate;
+ private JTextField returndate;
 
-	
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ReturnBook window = new ReturnBook();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
 	/**
 	 * Create the application.
 	 */
-	public IssueBook() {
+	public ReturnBook() {
 		initialize();
 	}
 
@@ -52,36 +65,37 @@ public class IssueBook implements ActionListener{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmIssueBook = new JFrame();
-		frmIssueBook.getContentPane().setBackground(UIManager.getColor("OptionPane.warningDialog.titlePane.shadow"));
-		frmIssueBook.setTitle("ISSUE BOOK");
-		frmIssueBook.setResizable(false);
-		frmIssueBook.setBounds(100, 100, 819, 459);
-		frmIssueBook.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frmIssueBook.getContentPane().setLayout(null);
+		frame = new JFrame();
+		frame.setResizable(false);
+		frame.getContentPane().setBackground(Color.GREEN);
+		frame.setTitle("ISSUE BOOK");
+		frame.setBounds(100, 100, 819, 459);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("ISSUE BOOK TO ENROLLED STUDENTS");
+		JLabel lblNewLabel = new JLabel("Return a Book");
 		lblNewLabel.setForeground(Color.BLACK);
-		lblNewLabel.setBounds(227, 0, 341, 15);
-		frmIssueBook.getContentPane().add(lblNewLabel);
+		lblNewLabel.setBounds(316, 12, 162, 15);
+		frame.getContentPane().add(lblNewLabel);
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(Color.CYAN);
+		panel.setBackground(new Color(255, 0, 255));
 		panel.setBounds(24, 45, 403, 311);
-		frmIssueBook.getContentPane().add(panel);
+		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblAdmissionNo = new JLabel("ADMISSION NO:");
+		lblAdmissionNo.setForeground(Color.BLACK);
 		lblAdmissionNo.setBounds(86, 24, 133, 15);
 		panel.add(lblAdmissionNo);
 		
 		getadm = new JTextField();
 		getadm.setColumns(10);
 		getadm.setBounds(227, 12, 164, 32);
-		getadm.addActionListener(this);
 		panel.add(getadm);
 		
 		JLabel lblStudentName = new JLabel("STUDENT NAME:");
+		lblStudentName.setForeground(Color.BLACK);
 		lblStudentName.setBounds(12, 108, 120, 15);
 		panel.add(lblStudentName);
 		
@@ -92,6 +106,7 @@ public class IssueBook implements ActionListener{
 		panel.add(getstudent);
 		
 		JLabel lblYear = new JLabel("YEAR");
+		lblYear.setForeground(Color.BLACK);
 		lblYear.setBounds(47, 177, 73, 15);
 		panel.add(lblYear);
 		
@@ -102,6 +117,7 @@ public class IssueBook implements ActionListener{
 		panel.add(getyear);
 		
 		JLabel lblMobile = new JLabel("MOBILE");
+		lblMobile.setForeground(Color.BLACK);
 		lblMobile.setBounds(47, 243, 73, 15);
 		panel.add(lblMobile);
 		
@@ -112,22 +128,23 @@ public class IssueBook implements ActionListener{
 		panel.add(getmobile);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(Color.YELLOW);
-		panel_1.setBounds(438, 39, 369, 311);
-		frmIssueBook.getContentPane().add(panel_1);
+		panel_1.setBackground(new Color(255, 0, 255));
+		panel_1.setBounds(427, 39, 380, 311);
+		frame.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 		
 		JLabel bbb = new JLabel("ISBN");
-		bbb.setBounds(118, 33, 48, 15);
+		bbb.setForeground(Color.BLACK);
+		bbb.setBounds(10, 31, 48, 15);
 		panel_1.add(bbb);
 		
 		getisbn = new JTextField();
-		getisbn.setBounds(176, 23, 181, 32);
+		getisbn.setBounds(56, 23, 181, 32);
 		panel_1.add(getisbn);
-		getisbn.addActionListener(this);
 		getisbn.setColumns(10);
 		
 		JLabel lblNewLabel_2 = new JLabel("Book Name");
+		lblNewLabel_2.setForeground(Color.BLACK);
 		lblNewLabel_2.setBounds(10, 115, 79, 15);
 		panel_1.add(lblNewLabel_2);
 		
@@ -138,6 +155,7 @@ public class IssueBook implements ActionListener{
 		panel_1.add(getname);
 		
 		JLabel nnn = new JLabel("Writer");
+		nnn.setForeground(Color.BLACK);
 		nnn.setBounds(26, 181, 76, 15);
 		panel_1.add(nnn);
 		
@@ -148,7 +166,8 @@ public class IssueBook implements ActionListener{
 		panel_1.add(getwriter);
 		
 		JLabel lblPublisher = new JLabel("Publisher");
-		lblPublisher.setBounds(37, 250, 93, 15);
+		lblPublisher.setForeground(Color.BLACK);
+		lblPublisher.setBounds(26, 250, 78, 15);
 		panel_1.add(lblPublisher);
 		
 		getPublisher = new JTextField();
@@ -157,40 +176,62 @@ public class IssueBook implements ActionListener{
 		getPublisher.setBounds(121, 242, 236, 32);
 		panel_1.add(getPublisher);
 		
+		btnSearch = new JButton("Search");
+		btnSearch.setForeground(Color.WHITE);
+		btnSearch.setBackground(Color.BLUE);
+		btnSearch.setFont(new Font("Dialog", Font.BOLD, 12));
+		btnSearch.setBounds(251, 26, 117, 25);
+		btnSearch.addActionListener(this);
+		panel_1.add(btnSearch);
+		
 		JSeparator separator = new JSeparator();
 		separator.setBounds(184, 25, 403, 2);
-		frmIssueBook.getContentPane().add(separator);
+		frame.getContentPane().add(separator);
 		
 		JLabel lblNewLabel_1 = new JLabel("Search Student");
 		lblNewLabel_1.setForeground(Color.RED);
 		lblNewLabel_1.setBounds(70, 27, 173, 15);
-		frmIssueBook.getContentPane().add(lblNewLabel_1);
+		frame.getContentPane().add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_1_1 = new JLabel("Search Book");
 		lblNewLabel_1_1.setForeground(Color.RED);
 		lblNewLabel_1_1.setBounds(589, 25, 173, 15);
-		frmIssueBook.getContentPane().add(lblNewLabel_1_1);
+		frame.getContentPane().add(lblNewLabel_1_1);
 		
-		btnIssue = new JButton("ISSUE BOOK");
-		btnIssue.setForeground(Color.GREEN);
-		btnIssue.setBackground(Color.DARK_GRAY);
-		btnIssue.setBounds(346, 402, 222, 25);
-		btnIssue.setFocusable(false);
-		btnIssue.addActionListener(this);
-		frmIssueBook.getContentPane().add(btnIssue);
+		btnReturn = new JButton("RETURN BOOK");
+		btnReturn.setForeground(Color.GREEN);
+		btnReturn.setBackground(Color.DARK_GRAY);
+		btnReturn.setBounds(346, 402, 222, 25);
+		btnReturn.setFocusable(false);
+		btnReturn.addActionListener(this);
+		frame.getContentPane().add(btnReturn);
 		
 		JLabel lblNewLabel_3 = new JLabel("DATE ISSUED");
-		lblNewLabel_3.setBounds(222, 375, 131, 15);
-		frmIssueBook.getContentPane().add(lblNewLabel_3);
+		lblNewLabel_3.setBounds(91, 372, 95, 15);
+		frame.getContentPane().add(lblNewLabel_3);
 		
 		showdate = new JTextField();
 		showdate.setFont(new Font("Dialog", Font.BOLD, 12));
 		showdate.setBackground(Color.DARK_GRAY);
 		showdate.setForeground(Color.WHITE);
 		showdate.setEditable(false);
-		showdate.setBounds(382, 368, 268, 24);
-		frmIssueBook.getContentPane().add(showdate);
+		showdate.setBounds(204, 368, 189, 24);
+		frame.getContentPane().add(showdate);
 		showdate.setColumns(10);
+		
+		JLabel lblNewLabel_3_1 = new JLabel("DATE RETURNED");
+		lblNewLabel_3_1.setForeground(Color.RED);
+		lblNewLabel_3_1.setBounds(438, 375, 131, 15);
+		frame.getContentPane().add(lblNewLabel_3_1);
+		
+		returndate = new JTextField();
+		returndate.setForeground(Color.WHITE);
+		returndate.setFont(new Font("Dialog", Font.BOLD, 12));
+		returndate.setEditable(false);
+		returndate.setColumns(10);
+		returndate.setBackground(Color.DARK_GRAY);
+		returndate.setBounds(589, 368, 208, 24);
+		frame.getContentPane().add(returndate);
 	}
 
 	@Override
@@ -210,11 +251,11 @@ public class IssueBook implements ActionListener{
 		/**
 		 * Issue a book
 		 */
-		if(ob.getSource().equals(btnIssue)) {
+		if(ob.getSource().equals(btnReturn)) {
 			
 			//validate fields
 			try {
-				Issue();
+				Return();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -224,58 +265,44 @@ public class IssueBook implements ActionListener{
 		/**
 		 * search if a book is registered
 		 */
-		else if(ob.getSource().equals(getisbn)) {
+		else if(ob.getSource().equals(btnSearch)) {
 			try {
-				pst = conn.connect.prepareStatement("select * from books where ISBN =?");
+				pst = conn.connect.prepareStatement("select * from issuebook where ISBN =?");
 				pst.setString(1, getisbn.getText());
 				ResultSet rs = pst.executeQuery();
 				if(rs.next()) {
-					getwriter.setText(rs.getString(3));
-					getPublisher.setText(rs.getString(4));
+					showdate.setText(rs.getString(1));
+					getwriter.setText(rs.getString(4));
+					getPublisher.setText(rs.getString(5));
 					getname.setText(rs.getString(2));
+					getisbn.setText(rs.getString(3));
+					getstudent.setText(rs.getString(6));
+					getadm.setText(rs.getString(7));
+					getmobile.setText(rs.getString(8));
+					getyear.setText(rs.getString(9));
 				}else {
-					JOptionPane.showMessageDialog(frmIssueBook, "Book not Availabe","Warning",JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(frame, "Student - Book details mismatch","Warning",JOptionPane.WARNING_MESSAGE);
+					return;
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
-		}
-		
-		/**
-		 * search for registered student
-		 */
-		else if(ob.getSource().equals(getadm)) {
-			try {
-				pst = conn.connect.prepareStatement("select * from students where adm =?");
-				pst.setString(1, getadm.getText());
-				ResultSet rs = pst.executeQuery();
-				if(rs.next()) {
-					getstudent.setText(rs.getString(2));
-					getyear.setText(rs.getString(4));
-					getmobile.setText(rs.getString(5));
-				}else {
-					JOptionPane.showMessageDialog(frmIssueBook, "Student Not Enrolled!!","Warning",JOptionPane.WARNING_MESSAGE);
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 	}
 	
-	private void Issue() throws SQLException {
+	private void Return() throws SQLException {
 		if(getstudent.getText().isBlank()||getadm.getText().isBlank()||getyear.getText().isBlank()||getmobile.getText().isBlank()||
 		   getisbn.getText().isBlank()||getname.getText().isBlank()||getwriter.getText().isBlank()||getPublisher.getText().isBlank()){
 			
-			JOptionPane.showMessageDialog(frmIssueBook, "Student - Book details mismatch","Warning",JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(frame, "Student - Book details mismatch","Warning",JOptionPane.WARNING_MESSAGE);
 			return;
 		}else {
-			//check if book is issued
-			if(CheckInfo()) {
-			//issue a book
-			pst = conn.connect.prepareStatement("insert into issuebook values(?,?,?,?,?,?,?,?,?)");
+			
+			//return a book
+			
+			pst = conn.connect.prepareStatement("insert into returnbook values(?,?,?,?,?,?,?,?,?,?)");
 			pst.setString(1, iss.getDate());
 			pst.setString(2, iss.getB_name());
 			pst.setString(3, iss.getBk_isbn());
@@ -284,25 +311,20 @@ public class IssueBook implements ActionListener{
 			pst.setString(6, iss.getSt_name());
 			pst.setString(7, iss.getSt_adm());
 			pst.setString(8, iss.getSt_mobile());
-			pst.setString(9, iss.getSt_year()+LocalTime.now());
+			pst.setString(9, iss.getSt_year());
+			pst.setString(10, LocalDate.now().toString());
 			pst.execute();
-			JOptionPane.showInternalMessageDialog(null, "Book Issued!");
-			showdate.setText(LocalDate.now().toString());
-		}
+			
+			CheckInfo();
+				JOptionPane.showMessageDialog(frame, "Book Returned");
+				returndate.setText(LocalDate.now().toString());
 		}
 	}
 	
 	private boolean CheckInfo() throws SQLException {
-		pst = conn.connect.prepareStatement("select * from issuebook where ISBN=? and adm=?");
+		pst = conn.connect.prepareStatement("delete from issuebook where ISBN=? and adm=?");
 		pst.setString(1, iss.getBk_isbn());
 		pst.setString(2, iss.getSt_adm());
-		ResultSet rs = pst.executeQuery();
-		if(rs.next()) {
-			JOptionPane.showMessageDialog(frmIssueBook, "Book already issued","Warning",JOptionPane.WARNING_MESSAGE);
-			showdate.setText(rs.getString(1));
-			return false;
-		}else {
-			return true;
-		}
+			return pst.execute();
 	}
 }

@@ -142,6 +142,12 @@ public class AdminHome extends Login implements ActionListener {
 		
 		else if(btn.equals(btnstats)) {
 			//view statistics
+				try {
+					new Stats().frmStatistics.setVisible(true);
+				} catch (ClassNotFoundException | SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				};
 		}
 		
 		else if(btn.equals(btnlogout)) {

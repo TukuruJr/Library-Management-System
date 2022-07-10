@@ -61,8 +61,21 @@ public class Login implements ActionListener {
 		frmLoginModule.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
+		panel.setBackground(new Color(75, 0, 130));
 		panel.setBounds(12, 12, 384, 303);
 		frmLoginModule.getContentPane().add(panel);
+		panel.setLayout(null);
+		
+		JLabel lblLoginModule = new JLabel("LOGIN MODULE");
+		lblLoginModule.setFont(new Font("TeXGyreChorus", Font.BOLD | Font.ITALIC, 39));
+		lblLoginModule.setForeground(new Color(255, 255, 0));
+		lblLoginModule.setBounds(41, 80, 292, 43);
+		panel.add(lblLoginModule);
+		
+		JLabel lblFrancode = new JLabel("@FRANCODE");
+		lblFrancode.setForeground(new Color(255, 255, 0));
+		lblFrancode.setBounds(28, 262, 221, 15);
+		panel.add(lblFrancode);
 		
 		JLabel lblNewLabel = new JLabel("Select a Role and Login");
 		lblNewLabel.setBounds(414, 12, 227, 15);
@@ -198,7 +211,9 @@ public class Login implements ActionListener {
 				
 				if(pst.executeQuery().next()) {
 					JOptionPane.showMessageDialog(frmLoginModule, "Login Success!!");
+					new Thread().sleep(3000);
 					frmLoginModule.dispose();
+					new LibrarianHome().frmLibrarianHome.setVisible(true);
 					
 				}else {JOptionPane.showMessageDialog(frmLoginModule, "Login Failed","Error",JOptionPane.ERROR_MESSAGE);}
 				
